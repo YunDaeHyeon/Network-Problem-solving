@@ -2,21 +2,25 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>네트워크 퀴즈</title>
   <style>
     body {
       background-color: #e0e0e0;
       font-family: sans-serif;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      height: 100vh;
+      flex-direction: column;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
     .notice {
       font-size: 0.85rem;
       color: #555;
-      margin: 10px;
+      margin-bottom: 10px;
+      text-align: center;
     }
     .quiz-box {
       text-align: center;
@@ -24,7 +28,7 @@
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      width: 60%;
+      width: 100%;
       max-width: 600px;
       position: relative;
     }
@@ -33,10 +37,11 @@
       margin-bottom: 20px;
     }
     input[type="text"] {
-      width: 80%;
+      width: 90%;
       padding: 10px;
       font-size: 1rem;
       margin-bottom: 10px;
+      box-sizing: border-box;
     }
     #feedback {
       margin: 10px 0;
@@ -46,20 +51,49 @@
       margin-top: 20px;
     }
     .nav-buttons {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
     }
-    button {
-      margin: 0 5px;
-      padding: 5px 10px;
+    .nav-buttons button {
+      margin: 0 10px;
+      padding: 8px 14px;
       font-size: 0.9rem;
       cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .quiz-box {
+        padding: 20px;
+      }
+      input[type="text"] {
+        font-size: 1rem;
+      }
+      #question {
+        font-size: 1.1rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .quiz-box {
+        padding: 15px;
+      }
+      input[type="text"] {
+        font-size: 0.95rem;
+      }
+      #question {
+        font-size: 1rem;
+      }
+      .nav-buttons button {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="notice">※ 모든 문자열을 완벽하게 입력해야 정답처리되니 오답 떠도 그냥 넘어가세요...</div>
+  <div class="notice">※ 4월 23일 기준 문제 수 : 68개 ※</div>
+  <div class="notice">※ 모든 문자열을 완벽하게 입력해야 정답처리되니 오답 떠도 그냥 넘어가세요... ※</div>
+  <div class="notice">※ 답 입력 후 엔터 눌러야 다음으로 넘어가요.. ※</div>
+  <div class="notice">※ 해당 사이트틑 웹브라우저에서만 돌아갑니다. 휴대폰은 알아서..? ※</div>
   <div class="quiz-box">
     <div id="question"></div>
     <input type="text" id="answerInput" placeholder="정답을 입력하세요" autofocus />
@@ -78,15 +112,15 @@
       { q: "윈도우에서 IP 주소를 확인하는 명령어", a: "ipconfig" },
       { q: "윈도우에서 MAC 주소를 확인하는 명령어", a: "ipconfig /all" },
       { q: "리눅스에서 MAC과 IP 주소를 확인하는 명령어", a: "ip address show" },
-      { q: "TCP/IP 각 계층에서 처리하는 정보 단위(PDU)의 명칭", a: "데이터 -> 세그먼트(L4) -> 패킷(L3) -> 프레임(L2)" },
+      { q: "TCP/IP 각 계층에서 처리하는 정보 단위(PDU)의 명칭(상위계층부터)", a: "데이터, 세그먼트, 패킷, 프레임" },
       { q: "MAC, IP, Port의 주소 길이(크기)는?", a: "MAC : 6바이트 / IP : 4바이트 / Port : 2바이트" },
-      { q: "20, 21 포트가 의미하는 서비스는?", a: "FTP" },
-      { q: "22 포트가 의미하는 서비스는?", a: "SSH" },
-      { q: "23 포트가 의미하는 서비스는?", a: "TELNET" },
-      { q: "25 포트가 의미하는 서비스는?", a: "SMTP" },
-      { q: "80 포트가 의미하는 서비스는?", a: "HTTP" },
-      { q: "443 포트가 의미하는 서비스는?", a: "HTTPS" },
-      { q: "53 포트가 의미하는 서비스는?", a: "DNS" },
+      { q: "20, 21 포트가 의미하는 프로토콜은?", a: "FTP" },
+      { q: "22 포트가 의미하는 프로토콜은?", a: "SSH" },
+      { q: "23 포트가 의미하는 프로토콜은?", a: "TELNET" },
+      { q: "25 포트가 의미하는 프로토콜은?", a: "SMTP" },
+      { q: "80 포트가 의미하는 프로토콜은?", a: "HTTP" },
+      { q: "443 포트가 의미하는 프로토콜은?", a: "HTTPS" },
+      { q: "53 포트가 의미하는 프로토콜은?", a: "DNS" },
       { q: "ISO/OSI 7계층 L1~L7 한글/영어 순서", a: "Physical/물리, Data Link/데이터링크, Network/네트워크, Transport/전송, Session/세션, Presentation/표현, Application/응용" },
       { q: "각 계층에서 처리하는 정보 단위(PDU)에 포함된 주소", a: "L4: 포트 번호 / L3: IP 주소 / L2: MAC 주소" },
       { q: "TCP/IP 전송계층에 속한 대표적인 2가지 프로토콜", a: "TCP와 UDP" },
@@ -116,7 +150,31 @@
       { q: "프레임 꼬리에 붙는 데이터는?", a: "프레임 트레일러(FCS)" },
       { q: "스위치가 수신 프레임을 임시 저장하는 곳은?", a: "내부 임시 기억장소(버퍼, Buffer)" },
       { q: "네트워크 연결의 3단계는?", a: "물리, 논리, 응용" },
-      { q: "DNS 캐시를 초기화하는 명령어는?", a: "ipconfig /flushdns" }
+      { q: "DNS 캐시를 초기화하는 명령어는?", a: "ipconfig /flushdns" },
+      { q: "191.23.124.4 IP 주소의 클래스와 기본 서브넷마스크 값은?", a: "B클래스, 255.255.0.0" },
+      { q: "A클래스의 IP 범위는?", a: "0.0.0.0 ~ 127.255.255.255" },
+      { q: "B클래스의 IP 범위는?", a: "128.0.0.0 ~ 191.255.255.255" },
+      { q: "C클래스의 IP 범위는?", a: "192.0.0.0 ~ 223.255.255.255" },
+      { q: "D클래스의 IP 범위는?", a: "224.0.0.0 ~ 239.255.255.255" },
+      { q: "E클래스의 IP 범위는?", a: "240.0.0.0 ~ 255.255.255.255" },
+      { q: "A클래스의 사설 IP 범위는?", a: "10.0.0.0 ~ 10.255.255.255" },
+      { q: "B클래스의 사설 IP 범위는?", a: "172.16.0.0 ~ 172.31.255.255" },
+      { q: "C클래스의 사설 IP 범위는?", a: "192.168.0.0 ~ 192.168.255.255" },
+      { q: "루프백(Loopback)의 주소 범위는? (IPv4 기준)", a: "127.0.0.0 ~ 127.255.255.255" },
+      { q: "61.123.22.39의 네트워크 주소는?", a: "61.0.0.0" },
+      { q: "201.31.65.87의 브로드캐스트 주소는?", a: "201.31.65.255" },
+      { q: "송신자에서 수신자를 1명만 지정해서 데이터를 보내는 것은?", a: "유니캐스트" },
+      { q: "같은 네트워크 안에 소속된 모든 장비에게 데이터를 보내는 것은?", a: "브로드캐스트" },
+      { q: "특정 그룹에 속한 장비에게 데이터를 보내는 것은?", a: "멀티캐스트" },
+      { q: "목적지 또는 출발지 IP 주소가 10.20.30.40 인 패킷만 선택하는 필터식은?", a: "ip.addr == 10.20.30.40" },
+      { q: "브로드캐스트 프레임 수를 확인하는 필터식은?", a: "eth.dst == FF:FF:FF:FF:FF:FF" },
+      { q: "ARP 프레임 중 브로드캐스트 프레임 수를 확인하는 필터식은?", a: "arp and eth.dst == FF:FF:FF:FF:FF:FF" },
+      { q: "TCP의 SYN 세그먼트를 찾는 필터식은?", a: "tcp.flags.syn == 1" },
+      { q: "목적지 포트 번호가 80번인 패킷을 찾는 필터식은?", a: "tcp.dstport == 80" },
+      { q: "출발지 또는 목적지 IP 주소가 192.168.1.10 이고 출발지 또는 목적지 포트가 80번인 패킷을 찾는 필터식은?", a: "ip.addr == 192.168.1.10 and tcp.port == 80" },
+      { q: "출발지 또는 목적지 IP 주소가 192.168.1.143 이고 출발지 또는 목적지 포트가 80번인 패킷을 찾는 필터식은?", a: "ip.addr == 192.168.1.143 and tcp.port == 80" },
+      { q: "출발지 IP 주소가 192.168.1.10 에서 목적지 IP 주소가 192.168.1.143 으로 전달되는 패킷을 찾는 필터식은?", a: "ip.src == 192.168.1.10 and ip.dst == 192.168.1.143" },
+      { q: "출발지 IP 주소가 192.168.1.10 에서 목적지 IP 주소가 192.168.1.143 으로 전달되는 TCP SYN 세그먼트를 찾는 필터식은?", a: "ip.src == 192.168.1.10 and ip.dst == 192.168.1.143 and tcp.flags.syn == 1" },
     ];
 
     let current = 0;
@@ -132,10 +190,12 @@
     function showQuestion() {
       isAnswered = false;
       feedbackEl.textContent = "";
+      feedbackEl.style.color = "";
+      inputEl.value = "";
+      inputEl.disabled = false;
+      inputEl.focus();
       if (current < shuffled.length) {
         questionEl.textContent = `${current + 1}. ${shuffled[current].q}`;
-        inputEl.value = "";
-        inputEl.focus();
       } else {
         questionEl.textContent = "퀴즈 완료!";
         inputEl.style.display = "none";
@@ -151,7 +211,7 @@
         feedbackEl.style.color = "gray";
         return;
       }
-      if (isAnswered) return; // 이미 채점되었으면 중복 방지
+      if (isAnswered) return;
       isAnswered = true;
       const correctAnswer = shuffled[current].a.trim().toLowerCase();
       if (userInput.toLowerCase() === correctAnswer) {
@@ -165,9 +225,13 @@
     }
 
     function nextQuestion() {
-      if (!isAnswered) return;
-      current++;
-      showQuestion();
+      if (current < shuffled.length - 1) {
+        current++;
+        showQuestion();
+      } else if (current === shuffled.length - 1) {
+        current++;
+        showQuestion();
+      }
     }
 
     function prevQuestion() {
