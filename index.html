@@ -90,10 +90,10 @@
   </style>
 </head>
 <body>
-  <div class="notice">※ 4월 23일 기준 문제 수 : 68개 ※</div>
+  <div class="notice">※ 2025년 4월 23일 기준 문제 수 : 68개 ※</div>
   <div class="notice">※ 모든 문자열을 완벽하게 입력해야 정답처리되니 오답 떠도 그냥 넘어가세요... ※</div>
   <div class="notice">※ 답 입력 후 엔터 눌러야 다음으로 넘어가요.. ※</div>
-  <div class="notice">※ 해당 사이트틑 웹브라우저에서만 돌아갑니다. 휴대폰은 알아서..? ※</div>
+  <div class="notice">※ 해당 사이트는 웹브라우저에서만 돌아갑니다. 휴대폰은 알아서..? ※</div>
   <div class="quiz-box">
     <div id="question"></div>
     <input type="text" id="answerInput" placeholder="정답을 입력하세요" autofocus />
@@ -177,81 +177,94 @@
       { q: "출발지 IP 주소가 192.168.1.10 에서 목적지 IP 주소가 192.168.1.143 으로 전달되는 TCP SYN 세그먼트를 찾는 필터식은?", a: "ip.src == 192.168.1.10 and ip.dst == 192.168.1.143 and tcp.flags.syn == 1" },
     ];
 
-    let current = 0;
-    let score = 0;
-    const shuffled = quizData.sort(() => 0.5 - Math.random());
-    let isAnswered = false;
+  let current = 0;
+  let score = 0;
+  const shuffled = quizData.sort(() => 0.5 - Math.random());
+  let isAnswered = false;
+  let isComposing = false;
 
-    const questionEl = document.getElementById("question");
-    const inputEl = document.getElementById("answerInput");
-    const feedbackEl = document.getElementById("feedback");
-    const summaryEl = document.getElementById("summary");
+  const questionEl = document.getElementById("question");
+  const inputEl = document.getElementById("answerInput");
+  const feedbackEl = document.getElementById("feedback");
+  const summaryEl = document.getElementById("summary");
 
-    function showQuestion() {
-      isAnswered = false;
-      feedbackEl.textContent = "";
-      feedbackEl.style.color = "";
-      inputEl.value = "";
-      inputEl.disabled = false;
-      inputEl.focus();
-      if (current < shuffled.length) {
-        questionEl.textContent = `${current + 1}. ${shuffled[current].q}`;
-      } else {
-        questionEl.textContent = "퀴즈 완료!";
-        inputEl.style.display = "none";
-        feedbackEl.style.display = "none";
-        summaryEl.innerHTML = `총 ${shuffled.length}문제 중 <b>${score}개 정답</b>입니다.`;
-      }
+  function showQuestion() {
+    isAnswered = false;
+    feedbackEl.textContent = "";
+    feedbackEl.style.color = "";
+    inputEl.value = "";
+    inputEl.disabled = false;
+    inputEl.focus();
+
+    if (current < shuffled.length) {
+      questionEl.textContent = `${current + 1}. ${shuffled[current].q}`;
+    } else {
+      questionEl.textContent = "퀴즈 완료!";
+      inputEl.style.display = "none";
+      feedbackEl.style.display = "none";
+      summaryEl.innerHTML = `총 ${shuffled.length}문제 중 <b>${score}개 정답</b>입니다.`;
     }
+  }
 
-    function checkAnswer() {
-      const userInput = inputEl.value.trim();
+  function checkAnswer() {
+    const userInput = inputEl.value.trim();
+    if (!userInput || isAnswered) return;
+
+    isAnswered = true;
+    const correctAnswer = shuffled[current].a.trim().toLowerCase();
+    if (userInput.toLowerCase() === correctAnswer) {
+      feedbackEl.textContent = "✅ 정답입니다!";
+      feedbackEl.style.color = "green";
+      score++;
+    } else {
+      feedbackEl.textContent = `❌ 오답입니다. 정답은: ${shuffled[current].a}`;
+      feedbackEl.style.color = "red";
+    }
+  }
+
+  function nextQuestion() {
+    if (current < shuffled.length - 1) {
+      current++;
+      showQuestion();
+    } else if (current === shuffled.length - 1) {
+      current++;
+      showQuestion();
+    }
+  }
+
+  function prevQuestion() {
+    if (current > 0) {
+      current--;
+      showQuestion();
+    }
+  }
+
+  inputEl.addEventListener("compositionstart", () => {
+  isComposing = true;
+  });
+
+  inputEl.addEventListener("compositionend", () => {
+  isComposing = false;
+  });
+
+  inputEl.addEventListener("keydown", function (e) {
+  if (e.key === "Enter" && !isComposing) {
+    const userInput = inputEl.value.trim();
+
+    if (!isAnswered) {
       if (!userInput) {
         feedbackEl.textContent = "정답을 입력해주세요.";
         feedbackEl.style.color = "gray";
-        return;
-      }
-      if (isAnswered) return;
-      isAnswered = true;
-      const correctAnswer = shuffled[current].a.trim().toLowerCase();
-      if (userInput.toLowerCase() === correctAnswer) {
-        feedbackEl.textContent = "✅ 정답입니다!";
-        feedbackEl.style.color = "green";
-        score++;
       } else {
-        feedbackEl.textContent = `❌ 오답입니다. 정답은: ${shuffled[current].a}`;
-        feedbackEl.style.color = "red";
+        checkAnswer();
       }
+    } else {
+      nextQuestion();
     }
+  }
+});
 
-    function nextQuestion() {
-      if (current < shuffled.length - 1) {
-        current++;
-        showQuestion();
-      } else if (current === shuffled.length - 1) {
-        current++;
-        showQuestion();
-      }
-    }
-
-    function prevQuestion() {
-      if (current > 0) {
-        current--;
-        showQuestion();
-      }
-    }
-
-    inputEl.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        if (!isAnswered) {
-          checkAnswer();
-        } else {
-          nextQuestion();
-        }
-      }
-    });
-
-    showQuestion();
+  showQuestion();
   </script>
 </body>
 </html>
